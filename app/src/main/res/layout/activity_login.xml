@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity">
+
+    <Button
+        android:id="@+id/activity_login_button_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:text="Login"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="@+id/activity_login_textfield_password"
+        app:layout_constraintStart_toStartOf="@+id/activity_login_textfield_password"
+        app:layout_constraintTop_toBottomOf="@+id/activity_login_textfield_password" />
+
+    <Button
+        android:id="@+id/activity_login_button_signup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="Sign Up"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="@+id/activity_login_button_login"
+        app:layout_constraintStart_toStartOf="@+id/activity_login_button_login"
+        app:layout_constraintTop_toBottomOf="@+id/activity_login_button_login" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:text="Do your S****"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/activity_login_textfield_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="@+id/activity_login_textfield_email"
+        app:layout_constraintStart_toStartOf="@+id/activity_login_textfield_email"
+        app:layout_constraintTop_toBottomOf="@+id/activity_login_textfield_email" />
+
+    <EditText
+        android:id="@+id/activity_login_textfield_email"
+        style="@style/Widget.AppCompat.AutoCompleteTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:ems="10"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <Button
+        android:id="@+id/activity_login_button_forgotPassword"
+        style="@android:style/Widget.DeviceDefault.Button.Borderless.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="Forgot your Password?"
+        android:textAllCaps="false"
+        android:textColor="#000000"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="@+id/activity_login_button_signup"
+        app:layout_constraintStart_toStartOf="@+id/activity_login_button_signup"
+        app:layout_constraintTop_toBottomOf="@+id/activity_login_button_signup" />
+
+    <ProgressBar
+        android:id="@+id/activity_login_progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/activity_login_button_login"
+        app:layout_constraintEnd_toEndOf="@+id/activity_login_button_login"
+        app:layout_constraintStart_toStartOf="@+id/activity_login_button_login"
+        app:layout_constraintTop_toBottomOf="@+id/activity_login_textfield_password"
+        tools:visibility="visible" />
+</androidx.constraintlayout.widget.ConstraintLayout>
