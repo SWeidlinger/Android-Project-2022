@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "95692990274",
+    "project_id": "android-microproject-4737d",
+    "storage_bucket": "android-microproject-4737d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:95692990274:android:0c53685ac16a8d9da08adb",
+        "android_client_info": {
+          "package_name": "at.fhooe.me.microproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "95692990274-7hp0gohu3uf7odl367q3ri8eu9q9djts.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUGLgMwkpKspUesOekTvTG9-ha8136eHQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "95692990274-7hp0gohu3uf7odl367q3ri8eu9q9djts.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
