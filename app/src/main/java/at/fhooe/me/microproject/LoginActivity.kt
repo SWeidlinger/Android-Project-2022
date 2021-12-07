@@ -15,11 +15,13 @@ const val LOGIN = "LoginActivity"
 class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var mAuth: FirebaseAuth
+    private var mAuth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
+
+        mAuth = FirebaseAuth.getInstance()
         setContentView(binding.root)
 
         with(binding) {
@@ -33,17 +35,14 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         var i: Intent? = null
         when (_view?.id) {
             R.id.activity_login_button_login -> {
-                if (loginUser()) {
-                    i = Intent(_view.context, MainActivity::class.java)
-                    startActivity(i)
-                }
+                loginUser()
             }
             R.id.activity_login_button_signup -> {
                 i = Intent(_view.context, SignUpActivity::class.java)
                 startActivity(i)
             }
             R.id.activity_login_button_forgotPassword -> {
-                i = Intent(_view.context, SignUpActivity::class.java)
+                i = Intent(_view.context, ForgotPasswordActivity::class.java)
                 startActivity(i)
             }
             else -> {
@@ -52,11 +51,12 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    //TODO handle when user logs in with not the right email
+    //checking if all fields are populated and creating a toast message
     private fun loginUser(): Boolean {
         var email = binding.activityLoginTextfieldEmail.text
         var password = binding.activityLoginTextfieldPassword.text
         var flag: Boolean = false
-
         if (email.isEmpty() || password.isEmpty()) {
             if (email.isEmpty()) {
                 binding.activityLoginTextfieldEmail.error = "Email can't be empty"
@@ -70,6 +70,8 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                     if (it.isSuccessful) {
                         Toast.makeText(this, "User logged in", Toast.LENGTH_SHORT).show()
                         flag = true
+                        //transition to main screen when logged in
+                        startActivity(Intent(this, MainActivity::class.java))
                     } else {
                         Toast.makeText(this, "Login Failed:" + it.exception, Toast.LENGTH_SHORT)
                             .show()
