@@ -72,6 +72,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                         flag = true
                         //transition to main screen when logged in
                         startActivity(Intent(this, MainActivity::class.java))
+                        finish()
                     } else {
                         Toast.makeText(this, "Login Failed:" + it.exception, Toast.LENGTH_SHORT)
                             .show()
