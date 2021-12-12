@@ -61,6 +61,10 @@ class SignUpActivity : AppCompatActivity() {
                             val user = hashMapOf(
                                 "firstName" to firstName.toString(),
                                 "lastName" to lastName.toString(),
+                                "priorityA" to arrayListOf<String>(),
+                                "priorityB" to arrayListOf<String>(),
+                                "priorityC" to arrayListOf<String>(),
+                                "priorityD" to arrayListOf<String>(),
                                 "uid" to mAuth.uid
                             )
                             //get the user ID of the user and name the document in the database like that

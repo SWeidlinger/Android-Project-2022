@@ -6,14 +6,15 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.ActionBar
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
+import at.fhooe.me.microproject.RecyclerView.TaskData
+import at.fhooe.me.microproject.RecyclerView.MainRecyclerViewAdapter
 import at.fhooe.me.microproject.databinding.ActivityMainBinding
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private var mAuth = FirebaseAuth.getInstance()
     private var mDb = Firebase.firestore
+    private lateinit var fireStoreData: FirestoreData
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,15 +35,46 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.activityMainActionBar)
 
         //getting the data from the database and populating the textView for the name of the user
-        val userData =
-            mDb.collection("users").document(mAuth.uid.toString()).get().addOnCompleteListener() {
-                if (it.isSuccessful) {
-                    binding.activityMainTextViewUsername.text =
-                        it.getResult()!!["firstName"].toString() + "'s S****"
-                } else {
-                    binding.activityMainTextViewUsername.text = "User's S****"
-                }
+        mDb.collection("users").document(mAuth.uid.toString()).get().addOnCompleteListener() {
+            if (it.isSuccessful) {
+                binding.activityMainTextViewUsername.text =
+                    it.getResult()!!["firstName"].toString() + "'s S****"
+                fireStoreData = FirestoreData(
+                    it.getResult()!!["firstName"].toString(),
+                    it.getResult()!!["lastName"].toString(),
+                    it.getResult()!!["priorityA"] as ArrayList<String>,
+                    it.getResult()!!["priorityB"] as ArrayList<String>,
+                    it.getResult()!!["priorityC"] as ArrayList<String>,
+                    it.getResult()!!["priorityD"] as ArrayList<String>
+                )
+                //Priority A
+                val dataA = TaskData("Priority A", fireStoreData.priorityA)
+                val dataB = TaskData("Priority B", fireStoreData.priorityB)
+                val dataC = TaskData("Priority C", fireStoreData.priorityC)
+                val dataD = TaskData("Priority D", fireStoreData.priorityD)
+                var sections = ArrayList<TaskData>()
+                sections.add(dataA)
+                sections.add(dataB)
+                sections.add(dataC)
+                sections.add(dataD)
+                binding.activityMainRecyclerView.layoutManager = GridLayoutManager(this@MainActivity, 1)
+                binding.activityMainRecyclerView.adapter = MainRecyclerViewAdapter(sections)
+                binding.activityMainRecyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+            } else {
+                binding.activityMainTextViewUsername.text = "User's S****"
+                Toast.makeText(this, "Fetching Data failed!", Toast.LENGTH_LONG).show()
             }
+        }
+    }
+
+    //check if user is already logged in
+    override fun onStart() {
+        super.onStart()
+        val user: FirebaseUser? = mAuth.currentUser
+        if (user == null) {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
     }
 
     //populating ActionBar
@@ -64,16 +97,13 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this, ChangeSectionColorActivity::class.java))
             }
             R.id.activity_main_menu_help -> {
-                txt = "HELP!!!"
+                txt = "HELP IM STUCK INSIDE THE PHONE!!!"
             }
             R.id.activity_main_menu_signOut -> {
                 txt = "User signed out"
                 mAuth.signOut()
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
-            }
-            android.R.id.home -> {
-                txt = "HOME touched"
             }
 
             else -> {
@@ -88,15 +118,5 @@ class MainActivity : AppCompatActivity() {
             return true
         }
         return false
-    }
-
-    //check if user is already logged in
-    override fun onStart() {
-        super.onStart()
-        val user: FirebaseUser? = mAuth.currentUser
-        if (user == null) {
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
-        }
     }
 }
