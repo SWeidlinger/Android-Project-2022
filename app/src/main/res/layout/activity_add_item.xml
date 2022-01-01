@@ -4,67 +4,276 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:elevation="10dp"
     tools:context=".AddItemActivity">
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="48dp"
-        android:text="Add some S****"
-        android:textSize="34sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/activity_add_item_button_addTask"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Task"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7"
-        app:layout_constraintVertical_bias="0.499" />
 
     <EditText
         android:id="@+id/activity_add_item_textfield_task"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="32dp"
         android:ems="10"
-        android:hint="Here goes your Task"
+        android:hint="Type in your Task"
         android:inputType="textPersonName"
         android:minHeight="48dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintTop_toBottomOf="@+id/activity_add_item_toolbar" />
 
     <TextView
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:text="Priority Level"
-        android:textSize="20sp"
+        android:layout_marginTop="38dp"
+        android:text="Priority"
+        android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/activity_add_item_button_addTask"
         app:layout_constraintStart_toStartOf="@+id/activity_add_item_button_addTask"
         app:layout_constraintTop_toBottomOf="@+id/activity_add_item_textfield_task" />
 
-    <TextView
-        android:id="@+id/textView8"
+
+    <com.google.android.material.appbar.MaterialToolbar
+
+        android:id="@+id/activity_add_item_toolbar"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="75dp"
-        android:layout_marginEnd="75dp"
-        android:text="Here insert the Eisenhower Matrix           Priority A B C D"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/activity_add_item_button_addTask"
+        android:layout_height="100dp"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="Add some S****"
+        app:titleTextAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/activity_add_item_cardView_priorityA"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:checkable="true"
+        android:clickable="true"
+        android:foregroundTint="#4CAF50"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="0dp"
+        app:checkedIconTint="#4CAF50"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalDivider"
+        app:layout_constraintEnd_toStartOf="@+id/verticalDivider"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/horizontalDivider"
+        app:layout_constraintTop_toTopOf="@+id/verticalDivider"
+        app:layout_constraintVertical_bias="0.0">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/cardView_priorityA_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="A"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/cardView_priorityA_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Urgent \n&amp;\n Important"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView_priorityA_title" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/activity_add_item_cardView_priorityB"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:checkable="true"
+        android:clickable="true"
+        android:foregroundTint="#4CAF50"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="0dp"
+        app:checkedIconTint="#4CAF50"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalDivider"
+        app:layout_constraintEnd_toEndOf="@+id/horizontalDivider"
+        app:layout_constraintStart_toEndOf="@+id/verticalDivider"
+        app:layout_constraintTop_toTopOf="@+id/verticalDivider">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/cardView_priorityB_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="B"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/cardView_priorityB_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Not urgent \n&amp;\n Important"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/cardView_priorityB_title"
+                app:layout_constraintStart_toStartOf="@+id/cardView_priorityB_title"
+                app:layout_constraintTop_toBottomOf="@+id/cardView_priorityB_title" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/activity_add_item_cardView_priorityC"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:checkable="true"
+        android:clickable="true"
+        android:foregroundTint="#4CAF50"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="0dp"
+        app:checkedIconTint="#4CAF50"
+        app:layout_constraintBottom_toBottomOf="@+id/verticalDivider"
+        app:layout_constraintEnd_toStartOf="@+id/verticalDivider"
+        app:layout_constraintStart_toStartOf="@+id/horizontalDivider"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalDivider">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/cardView_priorityC_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="C"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/cardView_priorityC_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Urgent \n&amp;\n Not important"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/cardView_priorityC_title"
+                app:layout_constraintStart_toStartOf="@+id/cardView_priorityC_title"
+                app:layout_constraintTop_toBottomOf="@+id/cardView_priorityC_title" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/activity_add_item_cardView_priorityD"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:checkable="true"
+        android:clickable="true"
+        android:foregroundTint="#4CAF50"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="0dp"
+        app:checkedIconTint="#4CAF50"
+        app:layout_constraintBottom_toBottomOf="@+id/verticalDivider"
+        app:layout_constraintEnd_toEndOf="@+id/horizontalDivider"
+        app:layout_constraintStart_toEndOf="@+id/verticalDivider"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalDivider">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/cardView_priorityD_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="D"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/cardView_priorityD_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Not urgent \n&amp;\n Not important"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/cardView_priorityD_title"
+                app:layout_constraintStart_toStartOf="@+id/cardView_priorityD_title"
+                app:layout_constraintTop_toBottomOf="@+id/cardView_priorityD_title" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <View
+        android:id="@+id/verticalDivider"
+        android:layout_width="5dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="?android:attr/listDivider"
+        android:elevation="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/activity_add_item_button_addTask"
+        app:layout_constraintEnd_toEndOf="@+id/textView7"
+        app:layout_constraintStart_toStartOf="@+id/textView7"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+    <View
+        android:id="@+id/horizontalDivider"
+        android:layout_width="0dp"
+        android:layout_height="5dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:background="?android:attr/listDivider"
+        android:elevation="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/activity_add_item_button_addTask"
+        app:layout_constraintEnd_toEndOf="@+id/activity_add_item_textfield_task"
+        app:layout_constraintStart_toStartOf="@+id/activity_add_item_textfield_task"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+    <Button
+        android:id="@+id/activity_add_item_button_addTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:text="Add Task"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

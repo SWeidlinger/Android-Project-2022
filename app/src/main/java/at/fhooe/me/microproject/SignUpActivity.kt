@@ -1,6 +1,7 @@
 package at.fhooe.me.microproject
 
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -32,10 +33,9 @@ class SignUpActivity : AppCompatActivity() {
         var password = binding.activitySignUpTexfieldPassword.text
         var confirmPassword = binding.activitySignUpTexfieldPasswordConfirm.text
         var firstName = binding.activitySignUpTexfieldFirstName.text
-        var lastName = binding.activitySignUpTexfieldLastName.text
 
         //TODO Ugly code
-        if (email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || firstName.isEmpty() || lastName.isEmpty()) {
+        if (email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || firstName.isEmpty()) {
             if (email.isEmpty()) {
                 binding.activitySignUpTexfieldEmail.error = "Email can't be empty"
             }
@@ -49,9 +49,6 @@ class SignUpActivity : AppCompatActivity() {
             if (firstName.isEmpty()) {
                 binding.activitySignUpTexfieldFirstName.error = "First name can't be empty"
             }
-            if (lastName.isEmpty()) {
-                binding.activitySignUpTexfieldLastName.error = "Last name can't be empty"
-            }
         } else {
             if (password.toString() == confirmPassword.toString()) {
                 mAuth.createUserWithEmailAndPassword(email.toString(), password.toString())
@@ -60,11 +57,11 @@ class SignUpActivity : AppCompatActivity() {
                             //safe user in hashMap to then insert into the database
                             val user = hashMapOf(
                                 "firstName" to firstName.toString(),
-                                "lastName" to lastName.toString(),
                                 "priorityA" to arrayListOf<String>(),
                                 "priorityB" to arrayListOf<String>(),
                                 "priorityC" to arrayListOf<String>(),
                                 "priorityD" to arrayListOf<String>(),
+                                "sectionColor" to Color.GRAY.toInt(),
                                 "uid" to mAuth.uid
                             )
                             //get the user ID of the user and name the document in the database like that

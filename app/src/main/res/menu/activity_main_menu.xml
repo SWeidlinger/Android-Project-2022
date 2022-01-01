@@ -3,11 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/activity_main_menu_add"
-        android:icon="@android:drawable/ic_input_add"
-        android:title="Add"
-        app:showAsAction="always" />
-    <item
         android:id="@+id/activity_main_menu_changeSectionColor"
         android:title="Change Section Color" />
     <item
