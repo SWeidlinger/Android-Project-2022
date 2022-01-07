@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.MicroProject" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
+        <item name="colorPrimary">#A8A8A8</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
@@ -13,7 +13,11 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="floatingActionButtonStyle">@style/FloatingActionButtonStyle</item>
+
     </style>
+
+    <color name="colorDialog">@color/cardview_dark_background</color>
+    <color name="textField">@color/white</color>
 
     <style name="Theme.MicroProject.NoActionBar">
         <item name="windowActionBar">false</item>

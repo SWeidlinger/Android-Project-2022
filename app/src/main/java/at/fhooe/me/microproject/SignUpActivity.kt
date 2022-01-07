@@ -29,25 +29,25 @@ class SignUpActivity : AppCompatActivity() {
 
     //to create a new user
     private fun createUser() {
-        var email = binding.activitySignUpTexfieldEmail.text
-        var password = binding.activitySignUpTexfieldPassword.text
-        var confirmPassword = binding.activitySignUpTexfieldPasswordConfirm.text
-        var firstName = binding.activitySignUpTexfieldFirstName.text
+        var email = binding.activitySignUpTextInputLayoutEmail.editText?.text
+        var password = binding.activitySignUpTextInputLayoutPassword.editText?.text
+        var confirmPassword = binding.activitySignUpTextInputLayoutConfirmPassword.editText?.text
+        var firstName = binding.activitySignUpTextInputLayoutFirstName.editText?.text
 
         //TODO Ugly code
-        if (email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || firstName.isEmpty()) {
-            if (email.isEmpty()) {
-                binding.activitySignUpTexfieldEmail.error = "Email can't be empty"
+        if (email.isNullOrEmpty() || password.isNullOrEmpty() || confirmPassword.isNullOrEmpty() || firstName.isNullOrEmpty()) {
+            if (email.isNullOrEmpty()) {
+                binding.activitySignUpTextInputLayoutEmail.error = "Email can't be empty"
             }
-            if (password.isEmpty()) {
-                binding.activitySignUpTexfieldPassword.error = "Password can't be empty"
+            if (password.isNullOrEmpty()) {
+                binding.activitySignUpTextInputLayoutPassword.error = "Password can't be empty"
             }
-            if (confirmPassword.isEmpty()) {
-                binding.activitySignUpTexfieldPasswordConfirm.error =
+            if (confirmPassword.isNullOrEmpty()) {
+                binding.activitySignUpTextInputLayoutConfirmPassword.error =
                     "Need to confirm your password"
             }
-            if (firstName.isEmpty()) {
-                binding.activitySignUpTexfieldFirstName.error = "First name can't be empty"
+            if (firstName.isNullOrEmpty()) {
+                binding.activitySignUpTextInputLayoutFirstName.error = "First name can't be empty"
             }
         } else {
             if (password.toString() == confirmPassword.toString()) {
@@ -79,7 +79,7 @@ class SignUpActivity : AppCompatActivity() {
                         }
                     }
             } else {
-                binding.activitySignUpTexfieldPasswordConfirm.error = "Password doesn't match"
+                binding.activitySignUpTextInputLayoutConfirmPassword.error = "Password doesn't match"
             }
         }
     }

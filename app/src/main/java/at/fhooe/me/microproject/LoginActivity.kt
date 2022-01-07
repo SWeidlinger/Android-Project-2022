@@ -54,15 +54,15 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     //TODO handle when user logs in with not the right email
     //checking if all fields are populated and creating a toast message
     private fun loginUser(): Boolean {
-        var email = binding.activityLoginTextfieldEmail.text
-        var password = binding.activityLoginTextfieldPassword.text
+        var email = binding.activityLoginTextInputLayoutEmail.editText?.text
+        var password = binding.activityLoginTextInputLayoutPassword.editText?.text
         var flag: Boolean = false
-        if (email.isEmpty() || password.isEmpty()) {
-            if (email.isEmpty()) {
-                binding.activityLoginTextfieldEmail.error = "Email can't be empty"
+        if (email?.isEmpty() == true || password?.isEmpty() == true) {
+            if (email?.isEmpty() == true) {
+                binding.activityLoginTextInputLayoutEmail.error = "Email can't be empty"
             }
-            if (password.isEmpty()) {
-                binding.activityLoginTextfieldPassword.error = "Password can't be empty"
+            if (password?.isEmpty() == true) {
+                binding.activityLoginTextInputLayoutPassword.error = "Password can't be empty"
             }
         } else {
             mAuth.signInWithEmailAndPassword(email.toString(), password.toString())

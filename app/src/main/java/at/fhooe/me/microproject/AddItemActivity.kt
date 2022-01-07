@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import at.fhooe.me.microproject.databinding.ActivityAddItemBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -14,7 +15,7 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class AddItemActivity : AppCompatActivity() {
+class AddItemActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityAddItemBinding
     private var mAuth = FirebaseAuth.getInstance()
@@ -29,37 +30,22 @@ class AddItemActivity : AppCompatActivity() {
         setSupportActionBar(binding.activityAddItemToolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        binding.activityAddItemCardViewPriorityA.isChecked = true
-
-        binding.activityAddItemCardViewPriorityA.setOnClickListener{
-            unselectAllCardViews()
-            binding.activityAddItemCardViewPriorityA.isChecked = true
-            priority = "priorityA"
-        }
-        binding.activityAddItemCardViewPriorityB.setOnClickListener{
-            unselectAllCardViews()
-            binding.activityAddItemCardViewPriorityB.isChecked = true
-            priority = "priorityB"
-        }
-        binding.activityAddItemCardViewPriorityC.setOnClickListener{
-            unselectAllCardViews()
-            binding.activityAddItemCardViewPriorityC.isChecked = true
-            priority = "priorityC"
-        }
-        binding.activityAddItemCardViewPriorityD.setOnClickListener{
-            unselectAllCardViews()
-            binding.activityAddItemCardViewPriorityD.isChecked = true
-            priority = "priorityD"
+        with(binding){
+            activityAddItemCardViewPriorityA.isChecked = true
+            activityAddItemCardViewPriorityA.setOnClickListener(this@AddItemActivity)
+            activityAddItemCardViewPriorityB.setOnClickListener(this@AddItemActivity)
+            activityAddItemCardViewPriorityC.setOnClickListener(this@AddItemActivity)
+            activityAddItemCardViewPriorityD.setOnClickListener(this@AddItemActivity)
         }
 
         binding.activityAddItemButtonAddTask.setOnClickListener {
-            if (binding.activityAddItemTextfieldTask.text.isEmpty()) {
-                binding.activityAddItemTextfieldTask.error = "Please type in your Task!";
+            if (binding.activityAddItemTextInputLayoutTask.editText?.text?.isEmpty() == true) {
+                binding.activityAddItemTextInputLayoutTask.error = "Please type in your Task!";
             } else {
                 //adding task to the database
                 mDb.collection("users").document(mAuth.uid.toString()).update(
                     priority,
-                    FieldValue.arrayUnion(binding.activityAddItemTextfieldTask.text.toString())
+                    FieldValue.arrayUnion(binding.activityAddItemTextInputLayoutTask.editText?.text.toString())
                 ).addOnCompleteListener {
                     if (it.isSuccessful) {
                         //flag Activity Clear Top, so the intent of the main activity from before is cleared from the backstack
@@ -75,6 +61,28 @@ class AddItemActivity : AppCompatActivity() {
                         Toast.makeText(this, "Adding task failed!", Toast.LENGTH_SHORT).show()
                     }
                 }
+            }
+        }
+    }
+
+    override fun onClick(_view: View?) {
+        unselectAllCardViews()
+        when(_view?.id){
+            R.id.activity_add_item_cardView_priorityA -> {
+                binding.activityAddItemCardViewPriorityA.isChecked = true
+                priority = "priorityA"
+            }
+            R.id.activity_add_item_cardView_priorityB -> {
+                binding.activityAddItemCardViewPriorityB.isChecked = true
+                priority = "priorityB"
+            }
+            R.id.activity_add_item_cardView_priorityC -> {
+                binding.activityAddItemCardViewPriorityC.isChecked = true
+                priority = "priorityC"
+            }
+            R.id.activity_add_item_cardView_priorityD -> {
+                binding.activityAddItemCardViewPriorityD.isChecked = true
+                priority = "priorityD"
             }
         }
     }

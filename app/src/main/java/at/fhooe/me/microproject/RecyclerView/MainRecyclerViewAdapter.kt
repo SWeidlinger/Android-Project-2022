@@ -27,24 +27,8 @@ class MainRecyclerViewAdapter(private val sectionList: ArrayList<TaskData>, priv
         holder.mCardView.setCardBackgroundColor(mSectionColor)
         val items: ArrayList<String> = sectionList[position].sectionElements
 
-        holder.mChildRecyclerView.adapter = ChildRecyclerViewAdapter(items, sectionList[position].sectionTitle)
-        holder.mChildRecyclerView.layoutManager = GridLayoutManager(holder.mChildRecyclerView.context,1)
-
-        val swipeGesture = object: SwipeGestures(){
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                when(direction){
-                    ItemTouchHelper.LEFT ->{
-                        val adapter = holder.mChildRecyclerView.adapter as ChildRecyclerViewAdapter
-                        adapter.deleteItem(viewHolder.adapterPosition, sectionList[position].sectionTitle)
-                    }
-
-                    ItemTouchHelper.RIGHT->{
-                        //TODO
-                    }
-                }
-                super.onSwiped(viewHolder, direction)
-            }
-        }
+//        holder.mChildRecyclerView.adapter = ChildRecyclerViewAdapter(items, sectionList[position].sectionTitle)
+//        holder.mChildRecyclerView.layoutManager = GridLayoutManager(holder.mChildRecyclerView.context,1)
 
         //add horizontal separation lines
 //        holder.mChildRecyclerView.addItemDecoration(DividerItemDecoration(holder.mChildRecyclerView.context, DividerItemDecoration.VERTICAL))

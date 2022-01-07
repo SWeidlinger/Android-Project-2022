@@ -3,12 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/layout/activity_add_item.xml" value="0.5" />
+        <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/drawable/custom_button.xml" value="0.3828125" />
+        <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/drawable/dialog_rounded_corner.xml" value="0.3828125" />
+        <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/drawable/ic_baseline_cloud_sync_24_black.xml" value="0.3828125" />
+        <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/layout/activity_add_item.xml" value="0.33" />
         <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/layout/activity_change_password.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/layout/activity_change_section_color.xml" value="0.35260416666666666" />
         <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/layout/activity_forgot_password.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/layout/activity_login.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/layout/activity_main.xml" value="0.300561797752809" />
         <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/layout/activity_main2.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/layout/activity_main_list_element.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/layout/activity_main_menu.xml" value="0.36666666666666664" />
@@ -16,6 +19,8 @@
         <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/layout/activity_main_recyclerview_section_element.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/layout/activity_sign_up.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/layout/content_main.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/layout/dialog_change_section_color.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/layout/dialog_cheer_me_up.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/layout/list_items.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/menu/activity_main_menu.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/menu/secondary_menu.xml" value="0.36666666666666664" />

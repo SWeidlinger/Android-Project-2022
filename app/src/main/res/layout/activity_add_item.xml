@@ -7,49 +7,70 @@
     android:elevation="10dp"
     tools:context=".AddItemActivity">
 
-    <EditText
-        android:id="@+id/activity_add_item_textfield_task"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/activity_add_item_textInputLayout_task"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="60dp"
         android:layout_marginEnd="32dp"
-        android:ems="10"
         android:hint="Type in your Task"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        android:textSize="20sp"
+        app:boxCornerRadiusBottomEnd="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusTopStart="10dp"
+        app:boxStrokeWidth="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_add_item_toolbar" />
+        app:layout_constraintTop_toBottomOf="@id/activity_add_item_appBarLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textField" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="38dp"
+        android:layout_marginTop="32dp"
         android:text="Priority"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/activity_add_item_button_addTask"
         app:layout_constraintStart_toStartOf="@+id/activity_add_item_button_addTask"
-        app:layout_constraintTop_toBottomOf="@+id/activity_add_item_textfield_task" />
+        app:layout_constraintTop_toBottomOf="@+id/activity_add_item_textInputLayout_task" />
 
-
-    <com.google.android.material.appbar.MaterialToolbar
-
-        android:id="@+id/activity_add_item_toolbar"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/activity_add_item_appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="Add some S****"
-        app:titleTextAppearance="@style/TextAppearance.AppCompat.Display1" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/activity_add_item_collapsingToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="125dp"
+            app:title="Add some S****"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/activity_add_item_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:titleTextAppearance="@style/TextAppearance.AppCompat.Display1" />
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/activity_add_item_cardView_priorityA"
@@ -58,7 +79,6 @@
         android:checkable="true"
         android:clickable="true"
         android:foregroundTint="#4CAF50"
-        app:cardCornerRadius="0dp"
         app:cardElevation="0dp"
         app:checkedIconTint="#4CAF50"
         app:layout_constraintBottom_toTopOf="@+id/horizontalDivider"
@@ -66,7 +86,8 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/horizontalDivider"
         app:layout_constraintTop_toTopOf="@+id/verticalDivider"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.0"
+        style="@style/CustomCardTopLeft">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -106,13 +127,13 @@
         android:checkable="true"
         android:clickable="true"
         android:foregroundTint="#4CAF50"
-        app:cardCornerRadius="0dp"
         app:cardElevation="0dp"
         app:checkedIconTint="#4CAF50"
         app:layout_constraintBottom_toTopOf="@+id/horizontalDivider"
         app:layout_constraintEnd_toEndOf="@+id/horizontalDivider"
         app:layout_constraintStart_toEndOf="@+id/verticalDivider"
-        app:layout_constraintTop_toTopOf="@+id/verticalDivider">
+        app:layout_constraintTop_toTopOf="@+id/verticalDivider"
+        style="@style/CustomCardTopRight">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -152,13 +173,13 @@
         android:checkable="true"
         android:clickable="true"
         android:foregroundTint="#4CAF50"
-        app:cardCornerRadius="0dp"
         app:cardElevation="0dp"
         app:checkedIconTint="#4CAF50"
         app:layout_constraintBottom_toBottomOf="@+id/verticalDivider"
         app:layout_constraintEnd_toStartOf="@+id/verticalDivider"
         app:layout_constraintStart_toStartOf="@+id/horizontalDivider"
-        app:layout_constraintTop_toBottomOf="@+id/horizontalDivider">
+        app:layout_constraintTop_toBottomOf="@+id/horizontalDivider"
+        style="@style/CustomCardBottomLeft">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -198,13 +219,13 @@
         android:checkable="true"
         android:clickable="true"
         android:foregroundTint="#4CAF50"
-        app:cardCornerRadius="0dp"
         app:cardElevation="0dp"
         app:checkedIconTint="#4CAF50"
         app:layout_constraintBottom_toBottomOf="@+id/verticalDivider"
         app:layout_constraintEnd_toEndOf="@+id/horizontalDivider"
         app:layout_constraintStart_toEndOf="@+id/verticalDivider"
-        app:layout_constraintTop_toBottomOf="@+id/horizontalDivider">
+        app:layout_constraintTop_toBottomOf="@+id/horizontalDivider"
+        style="@style/CustomCardBottomRight">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -255,25 +276,38 @@
         android:id="@+id/horizontalDivider"
         android:layout_width="0dp"
         android:layout_height="5dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="4dp"
+        android:layout_marginEnd="32dp"
         android:layout_marginBottom="4dp"
         android:background="?android:attr/listDivider"
         android:elevation="5dp"
         app:layout_constraintBottom_toTopOf="@+id/activity_add_item_button_addTask"
-        app:layout_constraintEnd_toEndOf="@+id/activity_add_item_textfield_task"
-        app:layout_constraintStart_toStartOf="@+id/activity_add_item_textfield_task"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
     <Button
         android:id="@+id/activity_add_item_button_addTask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="150dp"
         android:text="Add Task"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:rotation="-90"
+        android:text="----------- Urgency ----------->"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/activity_add_item_cardView_priorityC"
+        app:layout_constraintEnd_toStartOf="@+id/horizontalDivider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activity_add_item_cardView_priorityA" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

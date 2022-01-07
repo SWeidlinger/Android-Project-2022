@@ -2,27 +2,39 @@ package at.fhooe.me.microproject
 
 import android.app.Dialog
 import android.content.Intent
-import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.Rect
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import at.fhooe.me.microproject.RecyclerView.TaskData
-import at.fhooe.me.microproject.RecyclerView.MainRecyclerViewAdapter
 import at.fhooe.me.microproject.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import android.view.Window
 import android.widget.Button
+import android.widget.TextView
+import androidx.appcompat.view.menu.ActionMenuItemView
 import androidx.cardview.widget.CardView
-import com.google.android.gms.tasks.Task
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
+import androidx.recyclerview.widget.ItemTouchHelper
+import at.fhooe.me.microproject.RecyclerView.ChildRecyclerViewAdapter
 import com.google.android.material.card.MaterialCardView
+import androidx.recyclerview.widget.RecyclerView
+import at.fhooe.me.microproject.RecyclerView.SwipeToDelete
+import kotlinx.coroutines.*
+import org.w3c.dom.Text
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,7 +43,7 @@ class MainActivity : AppCompatActivity() {
     private var mDb = Firebase.firestore
     private lateinit var mFireStoreData: FirestoreData
     private var mSectionColor = 0
-    private lateinit var mRecyclerViewData: ArrayList<TaskData>
+    private val jokeRetriever: JokeRetriever = JokeRetriever()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,50 +69,86 @@ class MainActivity : AppCompatActivity() {
                         it.getResult()!!["priorityD"] as ArrayList<String>
                     )
                     mSectionColor = it.getResult()!!["sectionColor"].toString().toInt()
-                    //Priority A
-                    val dataA = TaskData("Priority A", mFireStoreData.priorityA)
-                    val dataB = TaskData("Priority B", mFireStoreData.priorityB)
-                    val dataC = TaskData("Priority C", mFireStoreData.priorityC)
-                    val dataD = TaskData("Priority D", mFireStoreData.priorityD)
-                    mRecyclerViewData = ArrayList<TaskData>()
-                    mRecyclerViewData.add(dataA)
-                    mRecyclerViewData.add(dataB)
-                    mRecyclerViewData.add(dataC)
-                    mRecyclerViewData.add(dataD)
-
-                    binding.activityMainRecyclerView.layoutManager =
-                        LinearLayoutManager(this@MainActivity)
-
-                    binding.activityMainRecyclerView.adapter = MainRecyclerViewAdapter(mRecyclerViewData, mSectionColor)
-                    binding.activityMainAddButton.backgroundTintList = ColorStateList.valueOf(mSectionColor)
-
-                    //add horizontal separation line
-                    binding.activityMainRecyclerView.addItemDecoration(
-                        DividerItemDecoration(
-                            this,
-                            DividerItemDecoration.VERTICAL
-                        )
-                    )
-
+                    initializeData()
                 } else {
                     binding.activityMainCollapsingToolbar.title = "User's S****"
                     Toast.makeText(this, "Fetching Data failed!", Toast.LENGTH_LONG).show()
                 }
             }
+        } else {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
         }
-
-        binding.activityMainAddButton.setOnClickListener{
+        binding.activityMainAddButton.setOnClickListener {
             startActivity(Intent(this, AddItemActivity::class.java))
         }
     }
 
-    //check if user is already logged in
-    override fun onStart() {
-        super.onStart()
-        if (mAuth.currentUser == null) {
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
+    private fun initializeData() {
+        setSectionsColors()
+
+        initializeRecyclerView(
+            binding.activityMainRecyclerviewPriorityA,
+            mFireStoreData.priorityA,
+            binding.activityMainCardViewRecyclerviewPriorityA,
+            "Priority A"
+        )
+
+        initializeRecyclerView(
+            binding.activityMainRecyclerviewPriorityB,
+            mFireStoreData.priorityB,
+            binding.activityMainCardViewRecyclerviewPriorityB,
+            "Priority B"
+        )
+
+        initializeRecyclerView(
+            binding.activityMainRecyclerviewPriorityC,
+            mFireStoreData.priorityC,
+            binding.activityMainCardViewRecyclerviewPriorityC,
+            "Priority C"
+        )
+
+        initializeRecyclerView(
+            binding.activityMainRecyclerviewPriorityD,
+            mFireStoreData.priorityD,
+            binding.activityMainCardViewRecyclerviewPriorityD,
+            "Priority D"
+        )
+
+        //fix the case where the cheerMeUpButton would show up if there where no items in the recyclerview
+        if (binding.activityMainRecyclerviewPriorityA.adapter?.itemCount == 0) {
+            binding.activityMainActionBar.menu.findItem(R.id.activity_main_menu_cheerMeUp).isVisible =
+                false
         }
+
+        //add horizontal separation line
+        addDivider(binding.activityMainRecyclerviewPriorityA)
+        addDivider(binding.activityMainRecyclerviewPriorityB)
+        addDivider(binding.activityMainRecyclerviewPriorityC)
+        addDivider(binding.activityMainRecyclerviewPriorityD)
+    }
+
+    private fun initializeRecyclerView(
+        recyclerView: RecyclerView,
+        data: ArrayList<String>,
+        cardView: MaterialCardView,
+        priority: String
+    ) {
+        recyclerView.adapter = ChildRecyclerViewAdapter(
+            data,
+            priority,
+            cardView,
+            binding.activityMainActionBar.menu
+        )
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.isNestedScrollingEnabled = false
+
+        //to set the cardview invisible if no item is in the list so there wont be an ugly margin
+        cardView.isInvisible = data.isEmpty()
+
+        ItemTouchHelper(SwipeToDelete(recyclerView.adapter as ChildRecyclerViewAdapter)).attachToRecyclerView(
+            (recyclerView)
+        )
     }
 
     //populating ActionBar
@@ -113,6 +161,9 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         var txt: String? = null
         when (item.itemId) {
+            R.id.activity_main_menu_cheerMeUp -> {
+                showCheerMeUpDialog()
+            }
             R.id.activity_main_menu_changePassword -> {
                 startActivity(Intent(this, ChangePasswordActivity::class.java))
             }
@@ -128,7 +179,6 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
             }
-
             else -> {
                 Log.e(
                     "",
@@ -143,38 +193,116 @@ class MainActivity : AppCompatActivity() {
         return false
     }
 
-    fun showSectionColorDialog(){
+    private fun fetchJoke(setupText: TextView, deliveryText: TextView) {
+        val jokeFetchJob = Job()
+
+        val errorHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
+            Toast.makeText(this, "Error fetching Joke", Toast.LENGTH_LONG).show()
+        }
+
+        val scope = CoroutineScope(jokeFetchJob + Dispatchers.Main)
+
+        scope.launch(errorHandler) {
+            val joke = jokeRetriever.getJoke()
+
+            if (joke.type.equals("twopart")) {
+                setupText.isVisible = true
+                setupText.text = joke.setup
+                deliveryText.text = joke.delivery
+                return@launch
+            }
+            deliveryText.text = joke.joke
+            setupText.isVisible = false
+        }
+    }
+
+    private fun showCheerMeUpDialog() {
+        val dialog = Dialog(this@MainActivity)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.dialog_cheer_me_up)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val setupText = dialog.findViewById(R.id.dialog_cheer_me_up_textView_setup) as TextView
+        val deliveryText =
+            dialog.findViewById(R.id.dialog_cheer_me_up_textView_delivery) as TextView
+        val btnRefresh = dialog.findViewById(R.id.dialog_cheer_me_up_button_refresh) as Button
+        val btnBack = dialog.findViewById(R.id.dialog_cheer_me_up_button_back) as Button
+
+        fetchJoke(setupText, deliveryText)
+
+        var counterProcrastinating = 0
+        btnRefresh.setOnClickListener {
+            fetchJoke(setupText, deliveryText)
+            if (++counterProcrastinating % 7 == 0) {
+                Toast.makeText(
+                    this,
+                    "I think that was enough cheering up for now...",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+
+
+        btnBack.setOnClickListener {
+            dialog.cancel()
+        }
+
+        dialog.show()
+    }
+
+    private fun setSectionsColors() {
+        binding.activityMainCardViewPriorityA.setCardBackgroundColor(mSectionColor)
+        binding.activityMainCardViewPriorityB.setCardBackgroundColor(mSectionColor)
+        binding.activityMainCardViewPriorityC.setCardBackgroundColor(mSectionColor)
+        binding.activityMainCardViewPriorityD.setCardBackgroundColor(mSectionColor)
+//        binding.activityMainAddButton.backgroundTintList = ColorStateList.valueOf(mSectionColor)
+    }
+
+    private fun showSectionColorDialog() {
         val dialog = Dialog(this@MainActivity)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(true)
         dialog.setContentView(R.layout.dialog_change_section_color)
-        val previousColor = mSectionColor
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        val cardView1 = dialog.findViewById(R.id.dialog_change_section_color_cardView1) as MaterialCardView
-        val cardView2 = dialog.findViewById(R.id.dialog_change_section_color_cardView2) as MaterialCardView
-        val cardView3 = dialog.findViewById(R.id.dialog_change_section_color_cardView3) as MaterialCardView
-        val cardView4 = dialog.findViewById(R.id.dialog_change_section_color_cardView4) as MaterialCardView
-        val cardView5 = dialog.findViewById(R.id.dialog_change_section_color_cardView5) as MaterialCardView
-        val cardView6 = dialog.findViewById(R.id.dialog_change_section_color_cardView6) as MaterialCardView
-        val saveButton = dialog.findViewById(R.id.dialog_change_section_color_button_save) as Button
+        val color1 = Color.BLACK
+        val color2 = Color.GRAY
+        val color3 = Color.parseColor("#4B7BF2")
+        val color4 = Color.parseColor("#8AE043")
+        val color5 = Color.parseColor("#F7CE3E")
+        val color6 = Color.parseColor("#F07F4B")
 
-        cardView1.setCardBackgroundColor(Color.BLACK)
-        cardView2.setCardBackgroundColor(Color.GRAY)
-        cardView3.setCardBackgroundColor(Color.BLUE)
-        cardView4.setCardBackgroundColor(Color.CYAN)
-        cardView5.setCardBackgroundColor(Color.GREEN)
-        cardView6.setCardBackgroundColor(Color.RED)
+        val cardView1 =
+            dialog.findViewById(R.id.dialog_change_section_color_cardView1) as MaterialCardView
+        val cardView2 =
+            dialog.findViewById(R.id.dialog_change_section_color_cardView2) as MaterialCardView
+        val cardView3 =
+            dialog.findViewById(R.id.dialog_change_section_color_cardView3) as MaterialCardView
+        val cardView4 =
+            dialog.findViewById(R.id.dialog_change_section_color_cardView4) as MaterialCardView
+        val cardView5 =
+            dialog.findViewById(R.id.dialog_change_section_color_cardView5) as MaterialCardView
+        val cardView6 =
+            dialog.findViewById(R.id.dialog_change_section_color_cardView6) as MaterialCardView
+        val backButton = dialog.findViewById(R.id.dialog_change_section_color_button_back) as Button
 
-        when (mSectionColor){
-            Color.BLACK -> cardView1.isChecked = true
-            Color.GRAY -> cardView2.isChecked = true
-            Color.BLUE -> cardView3.isChecked = true
-            Color.CYAN -> cardView4.isChecked = true
-            Color.GREEN -> cardView5.isChecked = true
-            Color.RED -> cardView6.isChecked = true
+        cardView1.setCardBackgroundColor(color1)
+        cardView2.setCardBackgroundColor(color2)
+        cardView3.setCardBackgroundColor(color3)
+        cardView4.setCardBackgroundColor(color4)
+        cardView5.setCardBackgroundColor(color5)
+        cardView6.setCardBackgroundColor(color6)
+
+        when (mSectionColor) {
+            color1 -> cardView1.isChecked = true
+            color2 -> cardView2.isChecked = true
+            color3 -> cardView3.isChecked = true
+            color4 -> cardView4.isChecked = true
+            color5 -> cardView5.isChecked = true
+            color6 -> cardView6.isChecked = true
         }
 
-        fun unselectAllCardViews(){
+        fun unselectAllCardViews() {
             cardView1.isChecked = false
             cardView2.isChecked = false
             cardView3.isChecked = false
@@ -183,63 +311,80 @@ class MainActivity : AppCompatActivity() {
             cardView6.isChecked = false
         }
 
-        fun updateColor(){
-            binding.activityMainRecyclerView.adapter = MainRecyclerViewAdapter(mRecyclerViewData, mSectionColor)
-            binding.activityMainAddButton.backgroundTintList = ColorStateList.valueOf(mSectionColor)
-        }
-
-        cardView1.setOnClickListener{
+        cardView1.setOnClickListener {
             unselectAllCardViews()
             cardView1.isChecked = true
-            mSectionColor = Color.BLACK
-            updateColor()
+            mSectionColor = color1
+            setSectionsColors()
         }
 
-        cardView2.setOnClickListener{
+        cardView2.setOnClickListener {
             unselectAllCardViews()
             cardView2.isChecked = true
-            mSectionColor = Color.GRAY
-            updateColor()
+            mSectionColor = color2
+            setSectionsColors()
         }
 
-        cardView3.setOnClickListener{
+        cardView3.setOnClickListener {
             unselectAllCardViews()
             cardView3.isChecked = true
-            mSectionColor = Color.BLUE
-            updateColor()
+            mSectionColor = color3
+            setSectionsColors()
         }
 
-        cardView4.setOnClickListener{
+        cardView4.setOnClickListener {
             unselectAllCardViews()
             cardView4.isChecked = true
-            mSectionColor = Color.CYAN
-            updateColor()
+            mSectionColor = color4
+            setSectionsColors()
         }
 
-        cardView5.setOnClickListener{
+        cardView5.setOnClickListener {
             unselectAllCardViews()
             cardView5.isChecked = true
-            mSectionColor = Color.GREEN
-            updateColor()
+            mSectionColor = color5
+            setSectionsColors()
         }
 
-        cardView6.setOnClickListener{
+        cardView6.setOnClickListener {
             unselectAllCardViews()
             cardView6.isChecked = true
-            mSectionColor = Color.RED
-            updateColor()
+            mSectionColor = color6
+            setSectionsColors()
         }
 
-        saveButton.setOnClickListener{
-            mDb.collection("users").document(mAuth.uid.toString()).update("sectionColor", mSectionColor)
-            dialog.dismiss()
+        backButton.setOnClickListener {
+            dialog.cancel()
         }
 
         dialog.setOnCancelListener {
-            mSectionColor = previousColor
-            updateColor()
+            mDb.collection("users").document(mAuth.uid.toString())
+                .update("sectionColor", mSectionColor)
         }
 
         dialog.show()
+    }
+
+    //function so that no divider gets drawn behind the last element in the recyclerview
+    private fun addDivider(recyclerView: RecyclerView) {
+        recyclerView.addItemDecoration(
+            object :
+                DividerItemDecoration(this, DividerItemDecoration.VERTICAL) {
+                override fun getItemOffsets(
+                    outRect: Rect,
+                    view: View,
+                    parent: RecyclerView,
+                    state: RecyclerView.State
+                ) {
+                    val position: Int = parent.getChildAdapterPosition(view)
+                    // hide the divider for the last child
+                    if (position == state.itemCount - 1) {
+                        outRect.setEmpty()
+                    } else {
+                        super.getItemOffsets(outRect, view, parent, state)
+                    }
+                }
+            }
+        )
     }
 }
