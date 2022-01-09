@@ -18,14 +18,5 @@ class ChildRecyclerViewViewHolder(root: View): RecyclerView.ViewHolder(root) {
     init {
         mItemText = root.findViewById(R.id.activity_main_recyclerView_section_element_title)
         mCardView = root.findViewById(R.id.activity_main_recyclerView_section_element_cardView)
-
-        mCardView.setOnClickListener{
-            mCardView.isChecked = !mCardView.isChecked
-            if (mCardView.isChecked){
-                Toast.makeText(root.context, "Great Job you finished: ${mItemText.text}", Toast.LENGTH_SHORT).show()
-            }else{
-                Toast.makeText(root.context, "unselected ${mItemText.text}", Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 }

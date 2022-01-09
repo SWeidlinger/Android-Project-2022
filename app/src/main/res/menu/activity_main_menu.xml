@@ -4,8 +4,9 @@
 
     <item
         android:id="@+id/activity_main_menu_cheerMeUp"
-        android:icon="@drawable/ic_baseline_emoji_emotions_24"
+        android:icon="@drawable/ic_outline_emoji_emotions_24"
         android:title="Cheer me up!"
+        android:visibility="invisible"
         android:visible="true"
         app:showAsAction="always" />
     <item

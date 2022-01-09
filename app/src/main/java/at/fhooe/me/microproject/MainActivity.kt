@@ -1,7 +1,9 @@
 package at.fhooe.me.microproject
 
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
@@ -20,11 +22,16 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import android.view.Window
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.view.menu.ActionMenuItemView
 import androidx.cardview.widget.CardView
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.add
+import androidx.fragment.app.commit
 import androidx.recyclerview.widget.ItemTouchHelper
 import at.fhooe.me.microproject.RecyclerView.ChildRecyclerViewAdapter
 import com.google.android.material.card.MaterialCardView
@@ -44,34 +51,43 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mFireStoreData: FirestoreData
     private var mSectionColor = 0
     private val jokeRetriever: JokeRetriever = JokeRetriever()
+    private lateinit var firstName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //setting action Bar
-        binding.activityMainActionBar.showOverflowMenu()
-        setSupportActionBar(binding.activityMainActionBar)
+        supportFragmentManager.commit {
+            setReorderingAllowed(true)
+            add<LoadingFragment>(R.id.activity_main_fragmentContainerView)
+        }
+
+        val sp = applicationContext.getSharedPreferences("at.fhooe.me.microproject.FirstName", Context.MODE_PRIVATE)
+        firstName = sp.getString("firstName", "User")!!
+        binding.activityMainCollapsingToolbar.title = "${firstName}'s S****"
 
         if (mAuth.currentUser != null) {
             //getting the data from the database and populating the textView for the name of the user
             mDb.collection("users").document(mAuth.uid.toString()).get().addOnCompleteListener() {
                 if (it.isSuccessful) {
-                    binding.activityMainCollapsingToolbar.title =
-                        it.getResult()!!["firstName"].toString() + "'s S****"
+                    with(getSharedPreferences("at.fhooe.me.microproject.FirstName", Context.MODE_PRIVATE).edit()){
+                        putString("firstName", it.result!!["firstName"].toString())
+                        apply()
+                        val sp = applicationContext.getSharedPreferences("at.fhooe.me.microproject.FirstName", Context.MODE_PRIVATE)
+                        firstName = sp.getString("firstName", "User")!!
+                        binding.activityMainCollapsingToolbar.title = "${firstName}'s S****"
+                    }
                     mFireStoreData = FirestoreData(
-                        it.getResult()!!["firstName"].toString(),
-                        it.getResult()!!["lastName"].toString(),
-                        it.getResult()!!["priorityA"] as ArrayList<String>,
-                        it.getResult()!!["priorityB"] as ArrayList<String>,
-                        it.getResult()!!["priorityC"] as ArrayList<String>,
-                        it.getResult()!!["priorityD"] as ArrayList<String>
+                        it.result!!["firstName"].toString(),
+                        it.result!!["priorityA"] as ArrayList<String>,
+                        it.result!!["priorityB"] as ArrayList<String>,
+                        it.result!!["priorityC"] as ArrayList<String>,
+                        it.result!!["priorityD"] as ArrayList<String>
                     )
-                    mSectionColor = it.getResult()!!["sectionColor"].toString().toInt()
+                    mSectionColor = it.result!!["sectionColor"].toString().toInt()
                     initializeData()
                 } else {
-                    binding.activityMainCollapsingToolbar.title = "User's S****"
                     Toast.makeText(this, "Fetching Data failed!", Toast.LENGTH_LONG).show()
                 }
             }
@@ -85,50 +101,54 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initializeData() {
+        //setting action Bar
+        setSupportActionBar(binding.activityMainActionBar)
+
         setSectionsColors()
 
-        initializeRecyclerView(
+        setupRecyclerView(
             binding.activityMainRecyclerviewPriorityA,
             mFireStoreData.priorityA,
             binding.activityMainCardViewRecyclerviewPriorityA,
             "Priority A"
         )
 
-        initializeRecyclerView(
+        setupRecyclerView(
             binding.activityMainRecyclerviewPriorityB,
             mFireStoreData.priorityB,
             binding.activityMainCardViewRecyclerviewPriorityB,
             "Priority B"
         )
 
-        initializeRecyclerView(
+        setupRecyclerView(
             binding.activityMainRecyclerviewPriorityC,
             mFireStoreData.priorityC,
             binding.activityMainCardViewRecyclerviewPriorityC,
             "Priority C"
         )
 
-        initializeRecyclerView(
+        setupRecyclerView(
             binding.activityMainRecyclerviewPriorityD,
             mFireStoreData.priorityD,
             binding.activityMainCardViewRecyclerviewPriorityD,
             "Priority D"
         )
 
-        //fix the case where the cheerMeUpButton would show up if there where no items in the recyclerview
-        if (binding.activityMainRecyclerviewPriorityA.adapter?.itemCount == 0) {
-            binding.activityMainActionBar.menu.findItem(R.id.activity_main_menu_cheerMeUp).isVisible =
-                false
-        }
-
         //add horizontal separation line
         addDivider(binding.activityMainRecyclerviewPriorityA)
         addDivider(binding.activityMainRecyclerviewPriorityB)
         addDivider(binding.activityMainRecyclerviewPriorityC)
         addDivider(binding.activityMainRecyclerviewPriorityD)
+
+        //removing loading fragment again since the loading is finished
+        val fragment: Fragment? = supportFragmentManager.findFragmentById(R.id.activity_main_fragmentContainerView)
+        if(fragment != null) {
+            supportFragmentManager.beginTransaction().remove(fragment).commit()
+
+        }
     }
 
-    private fun initializeRecyclerView(
+    private fun setupRecyclerView(
         recyclerView: RecyclerView,
         data: ArrayList<String>,
         cardView: MaterialCardView,
@@ -138,7 +158,8 @@ class MainActivity : AppCompatActivity() {
             data,
             priority,
             cardView,
-            binding.activityMainActionBar.menu
+            binding.activityMainActionBar.menu,
+            binding.root
         )
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.isNestedScrollingEnabled = false
@@ -146,9 +167,16 @@ class MainActivity : AppCompatActivity() {
         //to set the cardview invisible if no item is in the list so there wont be an ugly margin
         cardView.isInvisible = data.isEmpty()
 
-        ItemTouchHelper(SwipeToDelete(recyclerView.adapter as ChildRecyclerViewAdapter)).attachToRecyclerView(
+        ItemTouchHelper(SwipeToDelete((recyclerView.adapter as ChildRecyclerViewAdapter), applicationContext)).attachToRecyclerView(
             (recyclerView)
         )
+    }
+
+    //check if the cheer me up button needs to be visible
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        menu?.findItem(R.id.activity_main_menu_cheerMeUp)?.isVisible =
+            mFireStoreData.priorityA.size > 2
+        return super.onPrepareOptionsMenu(menu)
     }
 
     //populating ActionBar
@@ -193,7 +221,7 @@ class MainActivity : AppCompatActivity() {
         return false
     }
 
-    private fun fetchJoke(setupText: TextView, deliveryText: TextView) {
+    private fun fetchJoke(setupText: TextView, deliveryText: TextView, progressBar: ProgressBar) {
         val jokeFetchJob = Job()
 
         val errorHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
@@ -204,6 +232,8 @@ class MainActivity : AppCompatActivity() {
 
         scope.launch(errorHandler) {
             val joke = jokeRetriever.getJoke()
+
+            progressBar.isVisible = false
 
             if (joke.type.equals("twopart")) {
                 setupText.isVisible = true
@@ -227,12 +257,13 @@ class MainActivity : AppCompatActivity() {
             dialog.findViewById(R.id.dialog_cheer_me_up_textView_delivery) as TextView
         val btnRefresh = dialog.findViewById(R.id.dialog_cheer_me_up_button_refresh) as Button
         val btnBack = dialog.findViewById(R.id.dialog_cheer_me_up_button_back) as Button
+        val progressBar = dialog.findViewById(R.id.dialog_cheer_me_up_progressBar) as ProgressBar
 
-        fetchJoke(setupText, deliveryText)
+        fetchJoke(setupText, deliveryText, progressBar)
 
         var counterProcrastinating = 0
         btnRefresh.setOnClickListener {
-            fetchJoke(setupText, deliveryText)
+            fetchJoke(setupText, deliveryText,progressBar)
             if (++counterProcrastinating % 7 == 0) {
                 Toast.makeText(
                     this,
@@ -255,7 +286,6 @@ class MainActivity : AppCompatActivity() {
         binding.activityMainCardViewPriorityB.setCardBackgroundColor(mSectionColor)
         binding.activityMainCardViewPriorityC.setCardBackgroundColor(mSectionColor)
         binding.activityMainCardViewPriorityD.setCardBackgroundColor(mSectionColor)
-//        binding.activityMainAddButton.backgroundTintList = ColorStateList.valueOf(mSectionColor)
     }
 
     private fun showSectionColorDialog() {

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.isVisible
 import at.fhooe.me.microproject.databinding.ActivityLoginBinding
 import at.fhooe.me.microproject.databinding.ActivitySignUpBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -51,7 +52,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    //TODO handle when user logs in with not the right email
     //checking if all fields are populated and creating a toast message
     private fun loginUser(): Boolean {
         var email = binding.activityLoginTextInputLayoutEmail.editText?.text
@@ -65,16 +65,20 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                 binding.activityLoginTextInputLayoutPassword.error = "Password can't be empty"
             }
         } else {
+            binding.activityLoginProgressBar.isVisible = true
             mAuth.signInWithEmailAndPassword(email.toString(), password.toString())
                 .addOnCompleteListener {
                     if (it.isSuccessful) {
                         Toast.makeText(this, "User logged in", Toast.LENGTH_SHORT).show()
                         flag = true
                         //transition to main screen when logged in
+
+                        binding.activityLoginProgressBar.isVisible = false
                         startActivity(Intent(this, MainActivity::class.java))
                         finish()
                     } else {
-                        Toast.makeText(this, "Login Failed:" + it.exception, Toast.LENGTH_SHORT)
+                        binding.activityLoginProgressBar.isVisible = false
+                        Toast.makeText(this, "Login Failed: " + it.exception, Toast.LENGTH_LONG)
                             .show()
                         flag = false
                     }

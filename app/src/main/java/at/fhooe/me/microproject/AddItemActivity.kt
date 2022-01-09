@@ -1,13 +1,20 @@
 package at.fhooe.me.microproject
 
+import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.Window
+import android.widget.Button
+import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import at.fhooe.me.microproject.databinding.ActivityAddItemBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -28,17 +35,22 @@ class AddItemActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(binding.root)
 
         setSupportActionBar(binding.activityAddItemToolbar)
+        binding.activityAddItemToolbar.showOverflowMenu()
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_28)
 
-        with(binding){
+        binding.activitiyAddItemTextViewTitleMatrix.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG)
+
+        with(binding) {
             activityAddItemCardViewPriorityA.isChecked = true
             activityAddItemCardViewPriorityA.setOnClickListener(this@AddItemActivity)
             activityAddItemCardViewPriorityB.setOnClickListener(this@AddItemActivity)
             activityAddItemCardViewPriorityC.setOnClickListener(this@AddItemActivity)
             activityAddItemCardViewPriorityD.setOnClickListener(this@AddItemActivity)
+//            activitiyAddItemButtonInfo.setOnClickListener(this@AddItemActivity)
         }
 
-        binding.activityAddItemButtonAddTask.setOnClickListener {
+        binding.activityAddItemFab.setOnClickListener {
             if (binding.activityAddItemTextInputLayoutTask.editText?.text?.isEmpty() == true) {
                 binding.activityAddItemTextInputLayoutTask.error = "Please type in your Task!";
             } else {
@@ -67,7 +79,7 @@ class AddItemActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(_view: View?) {
         unselectAllCardViews()
-        when(_view?.id){
+        when (_view?.id) {
             R.id.activity_add_item_cardView_priorityA -> {
                 binding.activityAddItemCardViewPriorityA.isChecked = true
                 priority = "priorityA"
@@ -84,7 +96,16 @@ class AddItemActivity : AppCompatActivity(), View.OnClickListener {
                 binding.activityAddItemCardViewPriorityD.isChecked = true
                 priority = "priorityD"
             }
+            R.id.activitiy_add_item_button_info ->{
+                createInfoDialog()
+            }
         }
+    }
+
+    //populating ActionBar
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.activity_add_item_menu, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -93,14 +114,57 @@ class AddItemActivity : AppCompatActivity(), View.OnClickListener {
                 onBackPressed()
                 return true
             }
+            R.id.activity_add_item_menu_addTask -> {
+                if (binding.activityAddItemTextInputLayoutTask.editText?.text?.isEmpty() == true) {
+                    binding.activityAddItemTextInputLayoutTask.error = "Please type in your Task!";
+                } else {
+                    //adding task to the database
+                    mDb.collection("users").document(mAuth.uid.toString()).update(
+                        priority,
+                        FieldValue.arrayUnion(binding.activityAddItemTextInputLayoutTask.editText?.text.toString())
+                    ).addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            //flag Activity Clear Top, so the intent of the main activity from before is cleared from the backstack
+                            startActivity(
+                                Intent(
+                                    this,
+                                    MainActivity::class.java
+                                ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                            )
+                            Toast.makeText(this, "Added task!", Toast.LENGTH_SHORT).show()
+                            finish()
+                        } else {
+                            Toast.makeText(this, "Adding task failed!", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
+            R.id.activity_add_item_menu_info ->{
+                createInfoDialog()
+            }
         }
         return super.onContextItemSelected(item)
     }
 
-    fun unselectAllCardViews(){
+    fun unselectAllCardViews() {
         binding.activityAddItemCardViewPriorityA.isChecked = false
         binding.activityAddItemCardViewPriorityB.isChecked = false
         binding.activityAddItemCardViewPriorityC.isChecked = false
         binding.activityAddItemCardViewPriorityD.isChecked = false
+    }
+
+    fun createInfoDialog(){
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.dialog_info_matrix)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val btnBack = dialog.findViewById(R.id.dialog_info_matrix_button_back) as Button
+
+        btnBack.setOnClickListener{
+            dialog.dismiss()
+        }
+        dialog.show()
     }
 }

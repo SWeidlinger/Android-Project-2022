@@ -1,10 +1,12 @@
 package at.fhooe.me.microproject
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.core.view.isVisible
 import at.fhooe.me.microproject.databinding.ActivitySignUpBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -34,7 +36,6 @@ class SignUpActivity : AppCompatActivity() {
         var confirmPassword = binding.activitySignUpTextInputLayoutConfirmPassword.editText?.text
         var firstName = binding.activitySignUpTextInputLayoutFirstName.editText?.text
 
-        //TODO Ugly code
         if (email.isNullOrEmpty() || password.isNullOrEmpty() || confirmPassword.isNullOrEmpty() || firstName.isNullOrEmpty()) {
             if (email.isNullOrEmpty()) {
                 binding.activitySignUpTextInputLayoutEmail.error = "Email can't be empty"
@@ -51,6 +52,7 @@ class SignUpActivity : AppCompatActivity() {
             }
         } else {
             if (password.toString() == confirmPassword.toString()) {
+                binding.activitySignUpProgressBar.isVisible = true
                 mAuth.createUserWithEmailAndPassword(email.toString(), password.toString())
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
@@ -68,6 +70,15 @@ class SignUpActivity : AppCompatActivity() {
                             mDb.collection("users").document(mAuth.uid.toString()).set(user)
                             Toast.makeText(this, "User registered successfully", Toast.LENGTH_SHORT)
                                 .show()
+
+                            //saving users first Name in shared Preferences for faster Access
+                            with(getSharedPreferences("at.fhooe.me.microproject.FirstName", Context.MODE_PRIVATE).edit()){
+                                putString("firstName", firstName.toString())
+                                apply()
+                            }
+
+                            binding.activitySignUpProgressBar.isVisible = false
+
                             startActivity(Intent(this, MainActivity::class.java))
                             finish()
                         } else {

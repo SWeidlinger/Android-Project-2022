@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.MicroProject" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#A8A8A8</item>
+        <item name="colorPrimary">#FFFFFF</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
@@ -13,17 +13,49 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="floatingActionButtonStyle">@style/FloatingActionButtonStyle</item>
+        <item name="android:textColor">@color/black</item>
     </style>
-
-    <color name="colorDialog">@color/white</color>
-    <color name="textField">@color/black</color>
 
     <style name="Theme.MicroProject.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.MicroProject.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="customButtonStyle" parent="@style/Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textSize">20sp</item>
+        <item name="strokeColor">#000000</item>
+        <item name="strokeWidth">2dp</item>
+        <item name="android:padding">10dp</item>
+        <item name="cornerRadius">10dp</item>
+        <item name="rippleColor">@color/textField</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
 
-    <style name="Theme.MicroProject.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="FloatingActionButtonStyle" parent="Widget.Design.FloatingActionButton">
+        <item name ="shapeAppearanceOverlay">@style/FabShapeStyleSquare</item>
+        <item name="android:backgroundTint">@android:color/transparent</item>
+        <item name="borderWidth">3dp</item>
+        <item name="android:tint">@color/black</item>
+        <item name="backgroundTint">@color/black</item>
+        <item name="elevation">2dp</item>
+    </style>
+
+    <style name= "customTextFields" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">#000000</item>
+        <item name="hintTextColor">#000000</item>
+        <item name="boxBackgroundMode">outline</item>
+        <item name="boxStrokeWidth">2dp</item>
+        <item name="android:textCursorDrawable">@color/textField</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+    </style>
+
+    <color name="appbarColor">#fff</color>
+    <color name="cardViewMatrix">#F0F0F0</color>
+    <color name="mtrl_textinput_default_box_stroke_color">#000</color>
+    <color name="colorDialog">@color/white</color>
+    <color name="textField">@color/black</color>
+    <color name="buttonColor">@color/black</color>
+    <color name="colorOfTheLoadingFragment">@color/white</color>
 </resources>
