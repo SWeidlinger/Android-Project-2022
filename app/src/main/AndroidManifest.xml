@@ -13,20 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MicroProject">
         <activity
-            android:name=".ChangePasswordActivity"
-            android:exported="false" />
-        <activity
             android:name=".AddItemActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ForgotPasswordActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

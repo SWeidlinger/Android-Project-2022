@@ -40,11 +40,11 @@
 
     <style name="FloatingActionButtonStyle" parent="Widget.Design.FloatingActionButton">
         <item name ="shapeAppearanceOverlay">@style/FabShapeStyleSquare</item>
-        <item name="android:backgroundTint">@android:color/transparent</item>
+        <item name="android:backgroundTint">#121212</item>
         <item name="borderWidth">3dp</item>
         <item name="android:tint">@color/white</item>
         <item name="backgroundTint">@color/white</item>
-        <item name="elevation">2dp</item>
+        <item name="elevation">0dp</item>
     </style>
 
     <style name= "customTextFields" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">

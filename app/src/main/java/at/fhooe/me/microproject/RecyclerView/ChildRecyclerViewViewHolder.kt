@@ -12,11 +12,6 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.card.MaterialCardView
 
 class ChildRecyclerViewViewHolder(root: View): RecyclerView.ViewHolder(root) {
-    lateinit var mItemText: TextView
-    lateinit var mCardView: MaterialCardView
-
-    init {
-        mItemText = root.findViewById(R.id.activity_main_recyclerView_section_element_title)
-        mCardView = root.findViewById(R.id.activity_main_recyclerView_section_element_cardView)
-    }
+    val mItemText: TextView = root.findViewById(R.id.activity_main_recyclerView_section_element_title)
+    val mCardView: MaterialCardView = root.findViewById(R.id.activity_main_recyclerView_section_element_cardView)
 }

@@ -35,7 +35,7 @@
 
     <style name="FloatingActionButtonStyle" parent="Widget.Design.FloatingActionButton">
         <item name ="shapeAppearanceOverlay">@style/FabShapeStyleSquare</item>
-        <item name="android:backgroundTint">@android:color/transparent</item>
+        <item name="android:backgroundTint">@android:color/white</item>
         <item name="borderWidth">3dp</item>
         <item name="android:tint">@color/black</item>
         <item name="backgroundTint">@color/black</item>

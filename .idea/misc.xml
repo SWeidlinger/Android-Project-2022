@@ -9,7 +9,7 @@
         <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/layout/activity_add_item.xml" value="0.33" />
         <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/layout/activity_change_password.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/layout/activity_change_section_color.xml" value="0.35260416666666666" />
-        <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/layout/activity_forgot_password.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/layout/activity_forgot_password.xml" value="0.33" />
         <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/layout/activity_login.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/layout/activity_main.xml" value="0.300561797752809" />
         <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/layout/activity_main2.xml" value="0.36666666666666664" />
@@ -21,6 +21,7 @@
         <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/layout/content_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/layout/dialog_change_section_color.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/layout/dialog_cheer_me_up.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/layout/dialog_forgot_password.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/layout/dialog_info_matrix.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/layout/dialog_loading.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Sebastian/AndroidStudioProjects/Weidlinger_MicroProject/app/src/main/res/layout/fragment_loading.xml" value="0.36666666666666664" />

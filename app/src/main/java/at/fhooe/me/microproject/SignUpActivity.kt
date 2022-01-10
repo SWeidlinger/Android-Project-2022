@@ -84,9 +84,10 @@ class SignUpActivity : AppCompatActivity() {
                         } else {
                             Toast.makeText(
                                 this,
-                                "User registration failed Error:" + it.exception,
-                                Toast.LENGTH_SHORT
+                                "User registration failed!\n" + it.exception?.message,
+                                Toast.LENGTH_LONG
                             ).show()
+                            binding.activitySignUpProgressBar.isVisible = false
                         }
                     }
             } else {

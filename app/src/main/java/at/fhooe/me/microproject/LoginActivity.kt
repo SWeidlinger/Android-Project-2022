@@ -1,15 +1,22 @@
 package at.fhooe.me.microproject
 
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.Window
+import android.widget.Button
 import android.widget.Toast
 import androidx.core.view.isVisible
 import at.fhooe.me.microproject.databinding.ActivityLoginBinding
 import at.fhooe.me.microproject.databinding.ActivitySignUpBinding
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.ktx.Firebase
 
 const val LOGIN = "LoginActivity"
 
@@ -43,8 +50,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                 startActivity(i)
             }
             R.id.activity_login_button_forgotPassword -> {
-                i = Intent(_view.context, ForgotPasswordActivity::class.java)
-                startActivity(i)
+                showForgotPasswordDialog()
             }
             else -> {
                 Log.e(LOGIN, "unexpected id encountered")
@@ -78,12 +84,47 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                         finish()
                     } else {
                         binding.activityLoginProgressBar.isVisible = false
-                        Toast.makeText(this, "Login Failed: " + it.exception, Toast.LENGTH_LONG)
+                        Toast.makeText(this, "Login Failed: " + it.exception?.message, Toast.LENGTH_LONG)
                             .show()
                         flag = false
                     }
                 }
         }
         return flag
+    }
+
+    private fun showForgotPasswordDialog() {
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.dialog_forgot_password)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val btnBack = dialog.findViewById(R.id.dialog_forgotPassword_button_back) as Button
+        val btnReset =
+            dialog.findViewById(R.id.dialog_forgotPassword_button_resetPassword) as Button
+        val email =
+            dialog.findViewById(R.id.dialog_forgotPassword_textInputLayout_email) as TextInputLayout
+
+        btnReset.setOnClickListener {
+            if (email.editText?.text.isNullOrEmpty()) {
+                email.error = "Email can't be empty!"
+            } else {
+                FirebaseAuth.getInstance().sendPasswordResetEmail(email.editText!!.text.toString())
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Toast.makeText(this, "Email sent!", Toast.LENGTH_LONG).show()
+                            dialog.dismiss()
+                        } else {
+                            Toast.makeText(this, "Sending Email failed!", Toast.LENGTH_LONG).show()
+                        }
+                    }
+            }
+        }
+
+        btnBack.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 }

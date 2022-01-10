@@ -7,6 +7,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -37,6 +38,7 @@ import at.fhooe.me.microproject.RecyclerView.ChildRecyclerViewAdapter
 import com.google.android.material.card.MaterialCardView
 import androidx.recyclerview.widget.RecyclerView
 import at.fhooe.me.microproject.RecyclerView.SwipeToDelete
+import com.google.firebase.firestore.FieldValue
 import kotlinx.coroutines.*
 import org.w3c.dom.Text
 import retrofit2.Retrofit
@@ -63,7 +65,10 @@ class MainActivity : AppCompatActivity() {
             add<LoadingFragment>(R.id.activity_main_fragmentContainerView)
         }
 
-        val sp = applicationContext.getSharedPreferences("at.fhooe.me.microproject.FirstName", Context.MODE_PRIVATE)
+        val sp = applicationContext.getSharedPreferences(
+            "at.fhooe.me.microproject.FirstName",
+            Context.MODE_PRIVATE
+        )
         firstName = sp.getString("firstName", "User")!!
         binding.activityMainCollapsingToolbar.title = "${firstName}'s S****"
 
@@ -71,10 +76,18 @@ class MainActivity : AppCompatActivity() {
             //getting the data from the database and populating the textView for the name of the user
             mDb.collection("users").document(mAuth.uid.toString()).get().addOnCompleteListener() {
                 if (it.isSuccessful) {
-                    with(getSharedPreferences("at.fhooe.me.microproject.FirstName", Context.MODE_PRIVATE).edit()){
+                    with(
+                        getSharedPreferences(
+                            "at.fhooe.me.microproject.FirstName",
+                            Context.MODE_PRIVATE
+                        ).edit()
+                    ) {
                         putString("firstName", it.result!!["firstName"].toString())
                         apply()
-                        val sp = applicationContext.getSharedPreferences("at.fhooe.me.microproject.FirstName", Context.MODE_PRIVATE)
+                        val sp = applicationContext.getSharedPreferences(
+                            "at.fhooe.me.microproject.FirstName",
+                            Context.MODE_PRIVATE
+                        )
                         firstName = sp.getString("firstName", "User")!!
                         binding.activityMainCollapsingToolbar.title = "${firstName}'s S****"
                     }
@@ -141,8 +154,9 @@ class MainActivity : AppCompatActivity() {
         addDivider(binding.activityMainRecyclerviewPriorityD)
 
         //removing loading fragment again since the loading is finished
-        val fragment: Fragment? = supportFragmentManager.findFragmentById(R.id.activity_main_fragmentContainerView)
-        if(fragment != null) {
+        val fragment: Fragment? =
+            supportFragmentManager.findFragmentById(R.id.activity_main_fragmentContainerView)
+        if (fragment != null) {
             supportFragmentManager.beginTransaction().remove(fragment).commit()
 
         }
@@ -167,7 +181,12 @@ class MainActivity : AppCompatActivity() {
         //to set the cardview invisible if no item is in the list so there wont be an ugly margin
         cardView.isInvisible = data.isEmpty()
 
-        ItemTouchHelper(SwipeToDelete((recyclerView.adapter as ChildRecyclerViewAdapter), applicationContext)).attachToRecyclerView(
+        ItemTouchHelper(
+            SwipeToDelete(
+                (recyclerView.adapter as ChildRecyclerViewAdapter),
+                applicationContext
+            )
+        ).attachToRecyclerView(
             (recyclerView)
         )
     }
@@ -192,14 +211,16 @@ class MainActivity : AppCompatActivity() {
             R.id.activity_main_menu_cheerMeUp -> {
                 showCheerMeUpDialog()
             }
-            R.id.activity_main_menu_changePassword -> {
-                startActivity(Intent(this, ChangePasswordActivity::class.java))
-            }
             R.id.activity_main_menu_changeSectionColor -> {
                 showSectionColorDialog()
             }
             R.id.activity_main_menu_help -> {
-                txt = "HELP IM STUCK INSIDE THE PHONE!!!"
+                startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://todoist.com/productivity-methods/eisenhower-matrix")
+                    )
+                )
             }
             R.id.activity_main_menu_signOut -> {
                 txt = "User signed out"
@@ -263,7 +284,7 @@ class MainActivity : AppCompatActivity() {
 
         var counterProcrastinating = 0
         btnRefresh.setOnClickListener {
-            fetchJoke(setupText, deliveryText,progressBar)
+            fetchJoke(setupText, deliveryText, progressBar)
             if (++counterProcrastinating % 7 == 0) {
                 Toast.makeText(
                     this,

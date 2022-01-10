@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +13,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.Window
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -47,7 +50,6 @@ class AddItemActivity : AppCompatActivity(), View.OnClickListener {
             activityAddItemCardViewPriorityB.setOnClickListener(this@AddItemActivity)
             activityAddItemCardViewPriorityC.setOnClickListener(this@AddItemActivity)
             activityAddItemCardViewPriorityD.setOnClickListener(this@AddItemActivity)
-//            activitiyAddItemButtonInfo.setOnClickListener(this@AddItemActivity)
         }
 
         binding.activityAddItemFab.setOnClickListener {
@@ -96,9 +98,6 @@ class AddItemActivity : AppCompatActivity(), View.OnClickListener {
                 binding.activityAddItemCardViewPriorityD.isChecked = true
                 priority = "priorityD"
             }
-            R.id.activitiy_add_item_button_info ->{
-                createInfoDialog()
-            }
         }
     }
 
@@ -140,7 +139,7 @@ class AddItemActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
             R.id.activity_add_item_menu_info ->{
-                createInfoDialog()
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://todoist.com/productivity-methods/eisenhower-matrix")))
             }
         }
         return super.onContextItemSelected(item)
@@ -151,20 +150,5 @@ class AddItemActivity : AppCompatActivity(), View.OnClickListener {
         binding.activityAddItemCardViewPriorityB.isChecked = false
         binding.activityAddItemCardViewPriorityC.isChecked = false
         binding.activityAddItemCardViewPriorityD.isChecked = false
-    }
-
-    fun createInfoDialog(){
-        val dialog = Dialog(this)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(true)
-        dialog.setContentView(R.layout.dialog_info_matrix)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-        val btnBack = dialog.findViewById(R.id.dialog_info_matrix_button_back) as Button
-
-        btnBack.setOnClickListener{
-            dialog.dismiss()
-        }
-        dialog.show()
     }
 }

@@ -5,7 +5,8 @@
     <item
         android:id="@+id/activity_add_item_menu_info"
         android:icon="@drawable/ic_outline_info_28"
-        android:title="Info" />
+        android:title="Info Eisenhower Matrix"
+        app:showAsAction="always" />
     <item
         android:id="@+id/activity_add_item_menu_addTask"
         android:icon="@drawable/ic_baseline_check_32"
