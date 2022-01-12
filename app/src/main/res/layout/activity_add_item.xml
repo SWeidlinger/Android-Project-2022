@@ -303,16 +303,6 @@
         app:maxImageSize="36dp"
         app:srcCompat="@drawable/ic_baseline_check_24" />
 
-    <View
-        android:id="@+id/activity_add_item_divider_appBar"
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:background="@color/textField"
-        android:elevation="3dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_add_item_appBarLayout" />
-
     <TextView
         android:id="@+id/textView13"
         android:layout_width="wrap_content"

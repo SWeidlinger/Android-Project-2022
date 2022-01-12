@@ -39,6 +39,7 @@ import com.google.android.material.card.MaterialCardView
 import androidx.recyclerview.widget.RecyclerView
 import at.fhooe.me.microproject.RecyclerView.SwipeToDelete
 import com.google.firebase.firestore.FieldValue
+import com.rhexgomez.typer.roboto.TyperRoboto
 import kotlinx.coroutines.*
 import org.w3c.dom.Text
 import retrofit2.Retrofit
@@ -71,6 +72,7 @@ class MainActivity : AppCompatActivity() {
         )
         firstName = sp.getString("firstName", "User")!!
         binding.activityMainCollapsingToolbar.title = "${firstName}'s S****"
+        binding.activityMainCollapsingToolbar.setExpandedTitleTypeface(TyperRoboto.ROBOTO_BOLD)
 
         if (mAuth.currentUser != null) {
             //getting the data from the database and populating the textView for the name of the user

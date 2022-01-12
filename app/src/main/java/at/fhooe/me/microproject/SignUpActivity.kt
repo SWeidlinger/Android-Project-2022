@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
 import at.fhooe.me.microproject.databinding.ActivitySignUpBinding
@@ -13,7 +14,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class SignUpActivity : AppCompatActivity() {
+class SignUpActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivitySignUpBinding
     private var mAuth = FirebaseAuth.getInstance()
@@ -24,8 +25,16 @@ class SignUpActivity : AppCompatActivity() {
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.activitySignUpButtonSignUp.setOnClickListener {
-            createUser()
+        with(binding) {
+            activitySignUpButtonSignUp.setOnClickListener(this@SignUpActivity)
+        }
+    }
+
+    override fun onClick(_view: View?) {
+        when (_view?.id) {
+            R.id.activity_signUp_button_signUp -> {
+                createUser()
+            }
         }
     }
 
@@ -72,14 +81,19 @@ class SignUpActivity : AppCompatActivity() {
                                 .show()
 
                             //saving users first Name in shared Preferences for faster Access
-                            with(getSharedPreferences("at.fhooe.me.microproject.FirstName", Context.MODE_PRIVATE).edit()){
+                            with(
+                                getSharedPreferences(
+                                    "at.fhooe.me.microproject.FirstName",
+                                    Context.MODE_PRIVATE
+                                ).edit()
+                            ) {
                                 putString("firstName", firstName.toString())
                                 apply()
                             }
 
                             binding.activitySignUpProgressBar.isVisible = false
 
-                            startActivity(Intent(this, MainActivity::class.java))
+                            startActivity(Intent(this, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
                             finish()
                         } else {
                             Toast.makeText(
@@ -91,7 +105,8 @@ class SignUpActivity : AppCompatActivity() {
                         }
                     }
             } else {
-                binding.activitySignUpTextInputLayoutConfirmPassword.error = "Password doesn't match"
+                binding.activitySignUpTextInputLayoutConfirmPassword.error =
+                    "Password doesn't match"
             }
         }
     }

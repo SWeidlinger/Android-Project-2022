@@ -24,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.rhexgomez.typer.roboto.TyperRoboto
 
 class AddItemActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -43,6 +44,8 @@ class AddItemActivity : AppCompatActivity(), View.OnClickListener {
         supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_28)
 
         binding.activitiyAddItemTextViewTitleMatrix.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG)
+
+        binding.activityAddItemCollapsingToolbar.setExpandedTitleTypeface(TyperRoboto.ROBOTO_BOLD)
 
         with(binding) {
             activityAddItemCardViewPriorityA.isChecked = true
